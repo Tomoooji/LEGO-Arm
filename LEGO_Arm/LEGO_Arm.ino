@@ -11,13 +11,13 @@ servo ServoR, ServoL;
 
 const int CENTER_X = 512, CENTER_Y = 512;
 const int IGNORE = 20;
-const int speed; //12bit to hand potition
+const float speed = 0.01; //12bit to hand potition
 
 // control from arduino uno shield
 const int PIN_JSTK_X = A0;
 const int PIN_JSTK_Y = A1;
-const int PIN_SERVO_X = 6;
-const int PIN_SERVO_Y = 5;
+const int PIN_SERVO_X = 11;
+const int PIN_SERVO_Y = 10;
 
 float clip2pi(float ang){
   return ang>TWO_PI? ang-TWO_PI: (ang<0? ang+TWO_PI: ang);
