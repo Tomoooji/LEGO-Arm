@@ -1,6 +1,7 @@
 #include <Servo.h>
 
 const int LENGTH[] = {2,13,15}; // base,upper,lower
+const int LENGTH_sq[] = {sq(LENGTH[1]), sq(LENGTH[2])};
 const float GEAR = 3/2*RAD_TO_DEG;
 
 float hand[2]; //{x, y}
@@ -9,7 +10,7 @@ int servoR_ang, servoL_ang;
 servo ServoR, ServoL;
 
 const int CENTER_X = 512, CENTER_Y = 512;
-const int IGNORE = 30;
+const int IGNORE = 20;
 const int speed; //12bit to hand potition
 
 // control from arduino uno shield
@@ -18,13 +19,14 @@ const int PIN_JSTK_Y = A1;
 const int PIN_SERVO_X = 6;
 const int PIN_SERVO_Y = 5;
 
+float clip2pi(float ang){
+  return ang>TWO_PI? ang-TWO_PI: (ang<0? ang+TWO_PI: ang);
+}
+
 float calcAng(int targetX, int targetY){
-  int LENGTH_sq[] = {};
   int dist_sq = sq(targetX) + sq(targetY);
   float dist = sqrt(dist_sq);
-  return atan2(targetY, targetX) + acos(
-
-
+  return clip2pi(atan2(targetY, targetX) + acos((dist_sq + LENGTH_sq[0] - LENGTH_sq[1]) / (2 * dist * LENGTH[1])));
 }
 
 void setup(){
@@ -43,5 +45,4 @@ void loop(){
   servoR_ang = constrain(calcAng(hand[0] + LENGTH[0], hand[1]) * GEAR, 0, 180);
   ServoL.write(servoL_ang);
   ServoR.write(servoR_ang);
-
 }
