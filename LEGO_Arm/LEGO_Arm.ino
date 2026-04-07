@@ -9,7 +9,8 @@ int servoR_ang, servoL_ang;
 servo ServoR, ServoL;
 
 const int CENTER_X = 512, CENTER_Y = 512;
-const speed; //12bit to hand potition
+const int IGNORE = 30;
+const int speed; //12bit to hand potition
 
 // control from arduino uno shield
 const int PIN_JSTK_X = A0;
@@ -17,6 +18,30 @@ const int PIN_JSTK_Y = A1;
 const int PIN_SERVO_X = 6;
 const int PIN_SERVO_Y = 5;
 
-void setup(){}
+float calcAng(int targetX, int targetY){
+  int LENGTH_sq[] = {};
+  int dist_sq = sq(targetX) + sq(targetY);
+  float dist = sqrt(dist_sq);
+  return atan2(targetY, targetX) + acos(
 
-void loop(){}
+
+}
+
+void setup(){
+  pinMode(PIN_JSTK_X, INPUT);
+  pinMode(PIN_JSTK_Y, INPUT);
+  ServoL.attach(PIN_SERVO_L);
+  ServoR.attach(PIN_SERVO_R);
+}
+
+void loop(){
+  int input_x = analogRead(PIN_JSTK_X);
+  int input_y = analogRead(PIN_JSTK_Y);
+  hand[0] += (abs(input_x - CENTER_X) > IGNORE)? input_x * speed: 0;
+  hand[1] += (abs(input_y - CENTER_Y) > IGNORE)? input_y * speed: 0;
+  servoL_ang = constrain(calcAng(hand[0] - LENGTH[0], hand[1]) * GEAR, 0, 180);
+  servoR_ang = constrain(calcAng(hand[0] + LENGTH[0], hand[1]) * GEAR, 0, 180);
+  ServoL.write(servoL_ang);
+  ServoR.write(servoR_ang);
+
+}
