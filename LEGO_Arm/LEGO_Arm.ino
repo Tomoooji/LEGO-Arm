@@ -1,16 +1,12 @@
-#if define(ARDUINO)
-  #include <Servo.h>
-#elif define(ESP32)
-  #include <ESP32Servo.h>
-#endif
+#include <Servo.h>
 
-const int LENGTH[] = {}; // base,upper,lower
-const float GEAR = ;
+const int LENGTH[] = {2,13,15}; // base,upper,lower
+const float GEAR = 3/2*RAD_TO_DEG;
 
-float habd[2]; //{x, y}
+float hand[2]; //{x, y}
 float angleR, angleL;
 int servoR_ang, servoL_ang;
-servo ServoR, servoL;
+servo ServoR, ServoL;
 
 void setup(){}
 
